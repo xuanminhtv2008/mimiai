@@ -13,10 +13,16 @@
   --matcha-pale:#d6ead4; --matcha-soft:#edf6eb;
   --pink:#f4a7b9; --pink-d:#d4738a; --pink-l:#fcc8d5;
   --pink-pale:#fde8ee; --pink-ultra:#fff0f4;
+  --purple:#b39ddb; --purple-d:#7e57c2; --purple-l:#d1c4e9;
+  --purple-pale:#ede7f6; --purple-soft:#f3f0fb;
+  --teal:#80cbc4; --teal-d:#4db6ac; --teal-l:#b2dfdb;
+  --teal-pale:#e0f2f1; --teal-soft:#f0faf9;
   --cream:#fffaf8; --cream2:#fef6f9;
   --text:#4a3f4a; --text2:#8a7a8a; --text3:#c2b2c2;
   --b1:rgba(244,167,185,.25); --b2:rgba(123,169,139,.3);
+  --b3:rgba(179,157,219,.3); --b4:rgba(128,203,196,.3);
   --sp:rgba(244,167,185,.28); --sm:rgba(123,169,139,.22);
+  --sv:rgba(179,157,219,.25); --st:rgba(128,203,196,.22);
   --fc:'Nunito',sans-serif; --fb:'Quicksand',sans-serif;
 }
 html,body{height:100%;overflow:hidden;}
@@ -57,14 +63,16 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
   font-weight:700;cursor:pointer;box-shadow:0 4px 14px var(--sp);transition:all .25s;}
 .new-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px var(--sp);}
 
-/* Mode switch */
-.mode-sw{display:flex;gap:5px;padding:10px 16px 6px;position:relative;z-index:1;}
-.mt{flex:1;padding:8px 5px;border-radius:12px;background:transparent;
-  border:1.5px solid var(--b1);font-family:var(--fb);font-size:12px;font-weight:700;
-  cursor:pointer;transition:all .2s;color:var(--text3);}
+/* Mode switch - 2×2 grid for 4 modes */
+.mode-sw{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:10px 16px 6px;position:relative;z-index:1;}
+.mt{flex:1;padding:7px 5px;border-radius:12px;background:transparent;
+  border:1.5px solid var(--b1);font-family:var(--fb);font-size:11.5px;font-weight:700;
+  cursor:pointer;transition:all .2s;color:var(--text3);text-align:center;}
 .mt.ac{background:var(--pink-pale);border-color:var(--pink);color:var(--pink-d);}
 .mt.am{background:var(--matcha-soft);border-color:var(--matcha);color:var(--matcha-d);}
-.mt:hover:not(.ac):not(.am){background:white;color:var(--text2);transform:translateY(-1px);}
+.mt.av{background:var(--purple-soft);border-color:var(--purple);color:var(--purple-d);}
+.mt.at{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-d);}
+.mt:hover:not(.ac):not(.am):not(.av):not(.at){background:white;color:var(--text2);transform:translateY(-1px);}
 
 .sb-hist{flex:1;overflow-y:auto;padding:6px 10px;}
 .sb-hist::-webkit-scrollbar{width:3px;}
@@ -96,9 +104,13 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
   border-radius:50px;font-size:12px;font-weight:800;transition:all .35s;}
 .mode-pill.chat{background:var(--pink-pale);border:1.5px solid var(--pink);color:var(--pink-d);}
 .mode-pill.math{background:var(--matcha-soft);border:1.5px solid var(--matcha);color:var(--matcha-d);}
+.mode-pill.translate{background:var(--purple-soft);border:1.5px solid var(--purple);color:var(--purple-d);}
+.mode-pill.summarize{background:var(--teal-soft);border:1.5px solid var(--teal);color:var(--teal-d);}
 .mp-dot{width:7px;height:7px;border-radius:50%;animation:pulse 2.2s ease-in-out infinite;}
 .mode-pill.chat .mp-dot{background:var(--pink);box-shadow:0 0 6px var(--pink-l);}
 .mode-pill.math .mp-dot{background:var(--matcha);box-shadow:0 0 6px var(--matcha-l);}
+.mode-pill.translate .mp-dot{background:var(--purple);box-shadow:0 0 6px var(--purple-l);}
+.mode-pill.summarize .mp-dot{background:var(--teal);box-shadow:0 0 6px var(--teal-l);}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
 
 .model-sel{padding:6px 26px 6px 11px;background:var(--pink-pale);border:1.5px solid var(--b1);
@@ -114,16 +126,22 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
   font-size:11.5px;font-weight:700;color:var(--matcha-d);}
 
 /* ════════════ CALC PANEL ════════════ */
-.calc-panel{display:none;background:linear-gradient(135deg,var(--matcha-soft),white);
-  border-bottom:2px solid var(--matcha-pale);padding:12px 20px 14px;
+.sub-panel{display:none;border-bottom:2px solid;padding:12px 20px 14px;
   animation:sld .3s cubic-bezier(.34,1.56,.64,1);}
-.calc-panel.open{display:block;}
+.sub-panel.open{display:block;}
+.sub-panel.math-panel{background:linear-gradient(135deg,var(--matcha-soft),white);border-color:var(--matcha-pale);}
+.sub-panel.trans-panel{background:linear-gradient(135deg,var(--purple-soft),white);border-color:var(--purple-pale);}
+.sub-panel.summ-panel{background:linear-gradient(135deg,var(--teal-soft),white);border-color:var(--teal-pale);}
 @keyframes sld{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-.calc-wrap{max-width:840px;margin:0 auto;}
+.panel-wrap{max-width:840px;margin:0 auto;}
 
-.calc-head{font-family:var(--fc);font-size:13px;font-weight:800;color:var(--matcha-d);
+.panel-head{font-family:var(--fc);font-size:13px;font-weight:800;
   margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.math-panel .panel-head{color:var(--matcha-d);}
+.trans-panel .panel-head{color:var(--purple-d);}
+.summ-panel .panel-head{color:var(--teal-d);}
 
+/* Calc UI */
 .calc-row{display:grid;grid-template-columns:1fr auto auto;gap:7px;margin-bottom:8px;align-items:center;}
 .calc-in{width:100%;padding:9px 14px;background:white;border:2px solid var(--matcha-pale);
   border-radius:12px;color:var(--text);font-family:'Courier New',monospace;font-size:14px;
@@ -132,25 +150,65 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
 .calc-in::placeholder{font-family:var(--fb);color:var(--text3);font-weight:500;}
 .calc-btn{padding:9px 16px;border:none;border-radius:12px;font-family:var(--fb);
   font-size:13px;font-weight:800;cursor:pointer;transition:all .22s;white-space:nowrap;}
-.calc-btn-run{background:linear-gradient(135deg,var(--matcha),var(--matcha-d));color:#fff;
-  box-shadow:0 3px 10px var(--sm);}
+.calc-btn-run{background:linear-gradient(135deg,var(--matcha),var(--matcha-d));color:#fff;box-shadow:0 3px 10px var(--sm);}
 .calc-btn-run:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--sm);}
-.calc-btn-ask{background:linear-gradient(135deg,var(--pink),var(--pink-d));color:#fff;
-  box-shadow:0 3px 10px var(--sp);}
+.calc-btn-ask{background:linear-gradient(135deg,var(--pink),var(--pink-d));color:#fff;box-shadow:0 3px 10px var(--sp);}
 .calc-btn-ask:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--sp);}
-
 .calc-res{padding:9px 14px;border-radius:12px;font-family:'Courier New',monospace;
   font-size:15px;font-weight:800;display:none;align-items:center;gap:8px;flex-wrap:wrap;}
 .calc-res.ok{display:flex;background:var(--matcha-soft);border:2px solid var(--matcha-pale);color:#3a6a4a;}
 .calc-res.err{display:flex;background:var(--pink-pale);border:2px solid var(--pink-l);color:var(--pink-d);}
-.res-lbl{font-family:var(--fb);font-size:10.5px;font-weight:800;text-transform:uppercase;
-  letter-spacing:1px;opacity:.7;}
-
+.res-lbl{font-family:var(--fb);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;opacity:.7;}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
 .chip{padding:4px 11px;background:white;border:1.5px solid var(--b2);border-radius:50px;
   font-size:11.5px;font-weight:700;color:var(--matcha-d);cursor:pointer;transition:all .15s;
   font-family:'Courier New',monospace;}
 .chip:hover{background:var(--matcha-pale);transform:scale(1.05);}
+
+/* Translate Panel UI */
+.trans-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:8px;}
+.lang-sel{padding:8px 28px 8px 12px;background:white;border:2px solid var(--purple-pale);
+  border-radius:12px;color:var(--text);font-family:var(--fb);font-size:13px;font-weight:700;
+  cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;width:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23b39ddb' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;transition:border-color .2s;}
+.lang-sel:focus{border-color:var(--purple);}
+.lang-swap{background:linear-gradient(135deg,var(--purple),var(--purple-d));border:none;border-radius:50%;
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#fff;font-size:15px;transition:all .22s;flex-shrink:0;}
+.lang-swap:hover{transform:rotate(180deg) scale(1.1);}
+.trans-btn{width:100%;padding:9px;background:linear-gradient(135deg,var(--purple),var(--purple-d));
+  color:#fff;border:none;border-radius:12px;font-family:var(--fb);font-size:13px;font-weight:800;
+  cursor:pointer;transition:all .22s;box-shadow:0 3px 10px var(--sv);}
+.trans-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--sv);}
+.trans-langs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.lang-chip{padding:4px 10px;background:white;border:1.5px solid var(--b3);border-radius:50px;
+  font-size:11.5px;font-weight:700;color:var(--purple-d);cursor:pointer;transition:all .15s;}
+.lang-chip:hover{background:var(--purple-pale);transform:scale(1.05);}
+
+/* Summarize Panel UI */
+.summ-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.file-drop{flex:1;border:2px dashed var(--teal-l);border-radius:14px;padding:14px 16px;
+  text-align:center;cursor:pointer;transition:all .22s;background:white;position:relative;overflow:hidden;}
+.file-drop:hover,.file-drop.drag{border-color:var(--teal);background:var(--teal-pale);}
+.file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-drop-icon{font-size:24px;display:block;margin-bottom:4px;}
+.file-drop-txt{font-size:12.5px;font-weight:700;color:var(--teal-d);}
+.file-drop-sub{font-size:11px;color:var(--text3);font-weight:600;margin-top:2px;}
+.file-info{display:none;align-items:center;gap:8px;padding:8px 12px;
+  background:var(--teal-soft);border:1.5px solid var(--teal-l);border-radius:12px;
+  font-size:12.5px;font-weight:700;color:var(--teal-d);}
+.file-info.show{display:flex;}
+.file-remove{background:none;border:none;cursor:pointer;font-size:14px;opacity:.6;transition:opacity .15s;margin-left:auto;}
+.file-remove:hover{opacity:1;}
+.summ-btn{padding:9px 16px;background:linear-gradient(135deg,var(--teal),var(--teal-d));
+  color:#fff;border:none;border-radius:12px;font-family:var(--fb);font-size:13px;font-weight:800;
+  cursor:pointer;transition:all .22s;white-space:nowrap;box-shadow:0 3px 10px var(--st);}
+.summ-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--st);}
+.summ-types{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.summ-chip{padding:5px 11px;background:white;border:1.5px solid var(--b4);border-radius:50px;
+  font-size:11.5px;font-weight:700;color:var(--teal-d);cursor:pointer;transition:all .15s;}
+.summ-chip:hover,.summ-chip.active{background:var(--teal-pale);border-color:var(--teal);}
 
 /* ════════════ MESSAGES ════════════ */
 .msgs{flex:1;overflow-y:auto;padding:22px 20px;scroll-behavior:smooth;}
@@ -181,6 +239,8 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
   border-color:var(--pink);color:var(--text);transform:translateY(-3px) scale(1.02);
   box-shadow:0 7px 22px var(--sp);}
 .sc.mc:hover{background:linear-gradient(135deg,var(--matcha-soft),var(--pink-pale));border-color:var(--matcha);}
+.sc.vc:hover{background:linear-gradient(135deg,var(--purple-soft),var(--pink-pale));border-color:var(--purple);}
+.sc.tc:hover{background:linear-gradient(135deg,var(--teal-soft),var(--matcha-soft));border-color:var(--teal);}
 .sc .ci{font-size:18px;margin-bottom:5px;display:block;}
 
 /* Message bubble */
@@ -199,14 +259,23 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
 .msg.ai .bub{background:#fff;border:1.5px solid var(--b1);
   border-radius:5px 20px 20px 20px;box-shadow:0 3px 14px rgba(244,167,185,.09);}
 .msg.ai.mth .bub{border-color:var(--b2);background:linear-gradient(150deg,#fff 0%,var(--matcha-soft) 100%);}
+.msg.ai.mtr .bub{border-color:var(--b3);background:linear-gradient(150deg,#fff 0%,var(--purple-soft) 100%);}
+.msg.ai.msm .bub{border-color:var(--b4);background:linear-gradient(150deg,#fff 0%,var(--teal-soft) 100%);}
 
-/* Math answer badge */
+/* Mode badges */
 .m-badge{display:inline-flex;align-items:center;gap:5px;
-  padding:3px 11px;background:var(--matcha-soft);border:1.5px solid var(--matcha-pale);
-  border-radius:50px;font-size:11px;font-weight:800;color:var(--matcha-d);margin-bottom:7px;}
+  padding:3px 11px;border-radius:50px;font-size:11px;font-weight:800;margin-bottom:7px;}
+.m-badge.math{background:var(--matcha-soft);border:1.5px solid var(--matcha-pale);color:var(--matcha-d);}
+.m-badge.translate{background:var(--purple-soft);border:1.5px solid var(--purple-pale);color:var(--purple-d);}
+.m-badge.summarize{background:var(--teal-soft);border:1.5px solid var(--teal-pale);color:var(--teal-d);}
+
+/* File attachment badge in user message */
+.file-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
+  background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);border-radius:50px;
+  font-size:11.5px;font-weight:700;margin-bottom:5px;color:#fff;}
 
 /* Bubble actions */
-.bub-acts{display:flex;gap:5px;margin-top:9px;opacity:0;transition:opacity .2s;}
+.bub-acts{display:flex;gap:5px;margin-top:9px;opacity:0;transition:opacity .2s;flex-wrap:wrap;}
 .msg:hover .bub-acts{opacity:1;}
 .ba{display:flex;align-items:center;gap:4px;padding:4px 10px;
   background:var(--pink-pale);border:1px solid var(--b1);border-radius:50px;
@@ -214,6 +283,10 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
 .ba:hover{background:var(--pink-l);color:#fff;border-color:var(--pink);}
 .ba.green{background:var(--matcha-soft);border-color:var(--b2);color:var(--matcha-d);}
 .ba.green:hover{background:var(--matcha-l);color:#fff;}
+.ba.purple{background:var(--purple-soft);border-color:var(--b3);color:var(--purple-d);}
+.ba.purple:hover{background:var(--purple-l);color:#fff;}
+.ba.teal{background:var(--teal-soft);border-color:var(--b4);color:var(--teal-d);}
+.ba.teal:hover{background:var(--teal-l);color:#fff;}
 
 /* Markdown */
 .bub p{margin-bottom:9px;}.bub p:last-child{margin-bottom:0;}
@@ -245,27 +318,70 @@ body{font-family:var(--fb);font-size:14.5px;background:var(--cream);color:var(--
 /* ════════════ INPUT ════════════ */
 .inp-wrap{padding:12px 20px 18px;background:linear-gradient(to top,var(--cream) 65%,transparent);}
 .inp-box{max-width:840px;margin:0 auto;background:#fff;border:2px solid var(--pink-l);
-  border-radius:24px;display:flex;align-items:flex-end;gap:9px;padding:11px 11px 11px 17px;
+  border-radius:24px;display:flex;align-items:flex-end;gap:6px;padding:8px 8px 8px 14px;
   transition:all .25s;box-shadow:0 3px 18px var(--sp);}
 .inp-box:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(244,167,185,.14),0 3px 18px var(--sp);}
 .inp-box.math-mode{border-color:var(--matcha-l);box-shadow:0 3px 18px var(--sm);}
 .inp-box.math-mode:focus-within{border-color:var(--matcha);box-shadow:0 0 0 4px rgba(123,169,139,.13),0 3px 18px var(--sm);}
+.inp-box.translate-mode{border-color:var(--purple-l);box-shadow:0 3px 18px var(--sv);}
+.inp-box.translate-mode:focus-within{border-color:var(--purple);box-shadow:0 0 0 4px rgba(179,157,219,.13),0 3px 18px var(--sv);}
+.inp-box.summarize-mode{border-color:var(--teal-l);box-shadow:0 3px 18px var(--st);}
+.inp-box.summarize-mode:focus-within{border-color:var(--teal);box-shadow:0 0 0 4px rgba(128,203,196,.13),0 3px 18px var(--st);}
 
 textarea.inp{flex:1;background:none;border:none;outline:none;color:var(--text);
   font-family:var(--fb);font-size:14.5px;font-weight:500;line-height:1.6;
   resize:none;min-height:24px;max-height:150px;overflow-y:auto;}
 textarea.inp::placeholder{color:var(--text3);}
 
+/* Input action buttons */
+.inp-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.inp-btn{width:36px;height:36px;border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);font-size:15px;flex-shrink:0;}
+.voice-btn{background:var(--pink-pale);border:1.5px solid var(--b1);color:var(--text2);}
+.voice-btn:hover{background:var(--pink-l);color:#fff;border-color:var(--pink);}
+.voice-btn.listening{background:linear-gradient(135deg,#ff6b6b,var(--pink-d));color:#fff;
+  border-color:transparent;animation:voicePulse 1s ease-in-out infinite;}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(244,100,120,.4)}50%{box-shadow:0 0 0 8px rgba(244,100,120,0)}}
+.upload-btn{background:var(--teal-soft);border:1.5px solid var(--b4);color:var(--teal-d);}
+.upload-btn:hover{background:var(--teal-l);color:#fff;border-color:var(--teal);}
+.upload-btn input{display:none;}
 .send{width:42px;height:42px;border:none;border-radius:50%;
   display:flex;align-items:center;justify-content:center;cursor:pointer;
   transition:all .22s cubic-bezier(.34,1.56,.64,1);flex-shrink:0;}
 .send.chat-send{background:linear-gradient(135deg,var(--pink),#e088a5);box-shadow:0 3px 12px var(--sp);}
 .send.math-send{background:linear-gradient(135deg,var(--matcha),var(--matcha-d));box-shadow:0 3px 12px var(--sm);}
+.send.translate-send{background:linear-gradient(135deg,var(--purple),var(--purple-d));box-shadow:0 3px 12px var(--sv);}
+.send.summarize-send{background:linear-gradient(135deg,var(--teal),var(--teal-d));box-shadow:0 3px 12px var(--st);}
 .send:hover{transform:scale(1.12) rotate(-5deg);}
 .send:disabled{opacity:.35;cursor:not-allowed;transform:none;}
 
+/* File attached strip */
+.file-strip{max-width:840px;margin:0 auto 6px;display:none;align-items:center;gap:8px;
+  padding:7px 14px;background:var(--teal-soft);border:1.5px solid var(--teal-l);border-radius:14px;
+  font-size:12.5px;font-weight:700;color:var(--teal-d);}
+.file-strip.show{display:flex;}
+.file-strip-remove{background:none;border:none;cursor:pointer;font-size:14px;opacity:.6;margin-left:auto;transition:opacity .15s;}
+.file-strip-remove:hover{opacity:1;}
+
 .inp-foot{display:flex;align-items:center;justify-content:center;gap:5px;
   margin-top:8px;color:var(--text3);font-size:11px;font-weight:700;}
+
+/* Voice status bar */
+.voice-bar{max-width:840px;margin:0 auto 6px;padding:8px 16px;
+  background:linear-gradient(135deg,var(--pink-pale),var(--purple-soft));
+  border:1.5px solid var(--pink-l);border-radius:14px;
+  font-size:12.5px;font-weight:700;color:var(--pink-d);
+  display:none;align-items:center;gap:8px;}
+.voice-bar.show{display:flex;}
+.voice-wave{display:flex;gap:3px;align-items:center;}
+.vw{width:3px;border-radius:3px;background:var(--pink);animation:wv 0.8s ease-in-out infinite;}
+.vw:nth-child(1){height:6px;animation-delay:0s;}
+.vw:nth-child(2){height:14px;animation-delay:.1s;}
+.vw:nth-child(3){height:10px;animation-delay:.2s;}
+.vw:nth-child(4){height:18px;animation-delay:.3s;}
+.vw:nth-child(5){height:8px;animation-delay:.4s;}
+@keyframes wv{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.8)}}
 
 /* ════════════ TOAST & MODAL ════════════ */
 .toast{position:fixed;bottom:105px;left:50%;transform:translateX(-50%) translateY(14px);
@@ -288,7 +404,6 @@ textarea.inp::placeholder{color:var(--text3);}
 <aside class="sidebar">
   <div class="sb-head">
     <div class="logo">
-      <!-- Hello Kitty SVG -->
       <svg width="40" height="40" viewBox="0 0 100 100">
         <ellipse cx="27" cy="27" rx="16" ry="14" fill="#fff" stroke="#f4a7b9" stroke-width="3"/>
         <ellipse cx="73" cy="27" rx="16" ry="14" fill="#fff" stroke="#f4a7b9" stroke-width="3"/>
@@ -315,6 +430,8 @@ textarea.inp::placeholder{color:var(--text3);}
   <div class="mode-sw">
     <button class="mt ac" id="tabChat" onclick="setMode('chat')">💬 Chat</button>
     <button class="mt" id="tabMath" onclick="setMode('math')">🧮 Toán</button>
+    <button class="mt" id="tabTranslate" onclick="setMode('translate')">🌐 Dịch</button>
+    <button class="mt" id="tabSummarize" onclick="setMode('summarize')">📝 Tóm tắt</button>
   </div>
 
   <div class="sb-hist" id="hist">
@@ -346,10 +463,10 @@ textarea.inp::placeholder{color:var(--text3);}
     <div class="status-badge">🌿 Groq Online</div>
   </header>
 
-  <!-- Calculator Panel (visible in math mode) -->
-  <div class="calc-panel" id="calcPanel">
-    <div class="calc-wrap">
-      <div class="calc-head">🧮 Máy tính nhanh — tính ngay, không cần AI!</div>
+  <!-- ══ Math Panel ══ -->
+  <div class="sub-panel math-panel" id="calcPanel">
+    <div class="panel-wrap">
+      <div class="panel-head">🧮 Máy tính nhanh — tính ngay, không cần AI!</div>
       <div class="calc-row">
         <input class="calc-in" id="calcIn" placeholder="VD: 2^10, sqrt(144), sin(90°), 15% * 200..." onkeydown="if(event.key==='Enter')quickCalc()"/>
         <button class="calc-btn calc-btn-run" onclick="quickCalc()">= Tính</button>
@@ -372,6 +489,77 @@ textarea.inp::placeholder{color:var(--text3);}
     </div>
   </div>
 
+  <!-- ══ Translate Panel ══ -->
+  <div class="sub-panel trans-panel" id="transPanel">
+    <div class="panel-wrap">
+      <div class="panel-head">🌐 Chọn ngôn ngữ dịch</div>
+      <div class="trans-row">
+        <select class="lang-sel" id="langFrom">
+          <option value="auto">🔍 Tự động nhận diện</option>
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="en">🇺🇸 Tiếng Anh</option>
+          <option value="zh">🇨🇳 Tiếng Trung</option>
+          <option value="ja">🇯🇵 Tiếng Nhật</option>
+          <option value="ko">🇰🇷 Tiếng Hàn</option>
+          <option value="fr">🇫🇷 Tiếng Pháp</option>
+          <option value="de">🇩🇪 Tiếng Đức</option>
+          <option value="es">🇪🇸 Tiếng Tây Ban Nha</option>
+          <option value="ru">🇷🇺 Tiếng Nga</option>
+          <option value="th">🇹🇭 Tiếng Thái</option>
+        </select>
+        <button class="lang-swap" onclick="swapLangs()" title="Đổi chiều dịch">⇆</button>
+        <select class="lang-sel" id="langTo">
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="en">🇺🇸 Tiếng Anh</option>
+          <option value="zh">🇨🇳 Tiếng Trung</option>
+          <option value="ja">🇯🇵 Tiếng Nhật</option>
+          <option value="ko">🇰🇷 Tiếng Hàn</option>
+          <option value="fr">🇫🇷 Tiếng Pháp</option>
+          <option value="de">🇩🇪 Tiếng Đức</option>
+          <option value="es">🇪🇸 Tiếng Tây Ban Nha</option>
+          <option value="ru">🇷🇺 Tiếng Nga</option>
+          <option value="th">🇹🇭 Tiếng Thái</option>
+        </select>
+      </div>
+      <div class="trans-langs">
+        <span class="lang-chip" onclick="quickTrans('vi','en')">🇻🇳→🇺🇸 Việt→Anh</span>
+        <span class="lang-chip" onclick="quickTrans('en','vi')">🇺🇸→🇻🇳 Anh→Việt</span>
+        <span class="lang-chip" onclick="quickTrans('zh','vi')">🇨🇳→🇻🇳 Trung→Việt</span>
+        <span class="lang-chip" onclick="quickTrans('ja','vi')">🇯🇵→🇻🇳 Nhật→Việt</span>
+        <span class="lang-chip" onclick="quickTrans('ko','vi')">🇰🇷→🇻🇳 Hàn→Việt</span>
+        <span class="lang-chip" onclick="quickTrans('vi','en')">✍️ Sửa ngữ pháp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Summarize Panel ══ -->
+  <div class="sub-panel summ-panel" id="summPanel">
+    <div class="panel-wrap">
+      <div class="panel-head">📝 Upload file để tóm tắt</div>
+      <div class="summ-row">
+        <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()" ondragover="handleDrag(event,true)" ondragleave="handleDrag(event,false)" ondrop="handleDrop(event)">
+          <input type="file" id="fileInput" accept=".txt,.md,.html,.csv,.js,.py,.json" onchange="handleFileSelect(event)">
+          <span class="file-drop-icon">📂</span>
+          <div class="file-drop-txt">Kéo thả hoặc nhấn để chọn file</div>
+          <div class="file-drop-sub">Hỗ trợ: .txt .md .html .csv .js .py .json</div>
+        </div>
+        <button class="summ-btn" onclick="summarizeFile()">✨ Tóm tắt ngay</button>
+      </div>
+      <div class="file-info" id="fileInfo">
+        <span>📄</span>
+        <span id="fileName">—</span>
+        <span id="fileSize" style="opacity:.6;font-size:11px;"></span>
+        <button class="file-remove" onclick="clearFile()">✕</button>
+      </div>
+      <div class="summ-types">
+        <span class="summ-chip active" id="sc-brief" onclick="setSummType('brief',this)">⚡ Tóm tắt ngắn</span>
+        <span class="summ-chip" id="sc-detail" onclick="setSummType('detail',this)">📋 Chi tiết</span>
+        <span class="summ-chip" id="sc-bullets" onclick="setSummType('bullets',this)">• Gạch đầu dòng</span>
+        <span class="summ-chip" id="sc-key" onclick="setSummType('key',this)">🔑 Ý chính</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Messages -->
   <div class="msgs" id="msgs">
     <div class="welcome" id="welcome">
@@ -383,10 +571,8 @@ textarea.inp::placeholder{color:var(--text3);}
         <ellipse cx="50" cy="57" rx="36" ry="34" fill="#fff" stroke="#f4a7b9" stroke-width="2.5"/>
         <path d="M63 15 Q69 9 76 13 Q69 20 75 24 Q68 17 63 21 Q67 15 63 15Z" fill="#7ba98b"/>
         <circle cx="70" cy="18" r="3.5" fill="#a8c9a0"/>
-        <ellipse cx="38" cy="55" rx="5" ry="5" fill="#2a2a2a"/>
-        <ellipse cx="62" cy="55" rx="5" ry="5" fill="#2a2a2a"/>
-        <circle cx="40" cy="53" r="2" fill="white"/>
-        <circle cx="64" cy="53" r="2" fill="white"/>
+        <ellipse cx="38" cy="55" rx="5" ry="5" fill="#2a2a2a"/><ellipse cx="62" cy="55" rx="5" ry="5" fill="#2a2a2a"/>
+        <circle cx="40" cy="53" r="2" fill="white"/><circle cx="64" cy="53" r="2" fill="white"/>
         <ellipse cx="50" cy="64" rx="4" ry="3" fill="#f4a7b9"/>
         <line x1="18" y1="61" x2="40" y2="64" stroke="#ddd" stroke-width="1.5"/>
         <line x1="18" y1="67" x2="40" y2="67" stroke="#ddd" stroke-width="1.5"/>
@@ -394,30 +580,51 @@ textarea.inp::placeholder{color:var(--text3);}
         <line x1="60" y1="67" x2="82" y2="67" stroke="#ddd" stroke-width="1.5"/>
       </svg>
       <div class="w-title">Xin chào! Mình là Mimi ♡</div>
-      <p class="w-sub">Trợ lý AI dễ thương — Chat & Giải toán cùng Groq 🍵</p>
-      <div class="w-em">🌸 🧮 💕 🍵 🎀</div>
+      <p class="w-sub">Chat · Giải toán · Dịch văn bản · Tóm tắt file 🍵</p>
+      <div class="w-em">🌸 🧮 🌐 📝 🎀</div>
       <div class="suggs" id="suggBox">
-        <button class="sc" onclick="sg(this)"><span class="ci">💬</span>Giải thích AI là gì?</button>
+        <button class="sc" onclick="sg(this)"><span class="ci">💬</span>Giải thích AI và machine learning</button>
         <button class="sc" onclick="sg(this)"><span class="ci">✍️</span>Viết email xin việc tiếng Anh</button>
         <button class="sc mc" onclick="sg(this)"><span class="ci">🧮</span>Giải phương trình: 2x² - 5x + 3 = 0</button>
-        <button class="sc mc" onclick="sg(this)"><span class="ci">📐</span>Tính diện tích hình tròn bán kính 7cm</button>
+        <button class="sc vc" onclick="sg(this,'translate')"><span class="ci">🌐</span>Dịch đoạn văn sang tiếng Anh</button>
       </div>
     </div>
   </div>
 
-  <!-- Input -->
+  <!-- Input area -->
   <div class="inp-wrap">
+    <!-- Voice bar -->
+    <div class="voice-bar" id="voiceBar">
+      <div class="voice-wave"><div class="vw"></div><div class="vw"></div><div class="vw"></div><div class="vw"></div><div class="vw"></div></div>
+      <span id="voiceText">Đang nghe... nói điều bạn muốn hỏi 🎤</span>
+    </div>
+    <!-- File strip -->
+    <div class="file-strip" id="fileStrip">
+      <span>📄</span>
+      <span id="fileStripName"></span>
+      <span id="fileStripSize" style="opacity:.6;font-size:11px;"></span>
+      <button class="file-strip-remove" onclick="clearFile()">✕</button>
+    </div>
     <div class="inp-box" id="inpBox">
       <textarea class="inp" id="ta" rows="1"
         placeholder="Nhắn tin với Mimi AI... ♡"
-        onkeydown="kd(event)" oninput="ar(this)"></textarea>
-      <button class="send chat-send" id="sendBtn" onclick="send()" disabled>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-      </button>
+        onkeydown="kd(event)" oninput="ar(this);checkSend()"></textarea>
+      <div class="inp-actions">
+        <!-- Voice btn -->
+        <button class="inp-btn voice-btn" id="voiceBtn" onclick="toggleVoice()" title="Ra lệnh giọng nói 🎤">🎤</button>
+        <!-- Upload btn (visible always, but most useful in summarize mode) -->
+        <label class="inp-btn upload-btn" title="Upload file 📂">
+          📂<input type="file" id="inlineFileInput" accept=".txt,.md,.html,.csv,.js,.py,.json" onchange="handleInlineFile(event)">
+        </label>
+        <!-- Send btn -->
+        <button class="send chat-send" id="sendBtn" onclick="send()" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="inp-foot">🔒 API Key ẩn trên server · 🌸 Mimi AI có thể mắc lỗi</div>
+    <div class="inp-foot">🔒 API Key ẩn trên server · 🌸 Mimi AI có thể mắc lỗi · 🎤 Hỗ trợ giọng nói</div>
   </div>
 </main>
 </div>
@@ -431,21 +638,29 @@ let msgs = [];
 let loading = false;
 let sessions = [];
 let curId = null;
+let uploadedFile = null;        // { name, size, content }
+let summType = 'brief';
+let recognition = null;
+let isListening = false;
 
 // ═══ INIT ═══
 function init() {
   createDeco();
   const ta = document.getElementById('ta');
-  ta.addEventListener('input', () => {
-    document.getElementById('sendBtn').disabled = !ta.value.trim() || loading;
-  });
+  ta.addEventListener('input', checkSend);
   loadSessions();
+  initVoice();
+}
+
+function checkSend() {
+  const ta = document.getElementById('ta');
+  document.getElementById('sendBtn').disabled = (!ta.value.trim() && !uploadedFile) || loading;
 }
 
 // ═══ DECO DOTS ═══
 function createDeco() {
   const c = document.getElementById('deco');
-  const cols = ['#fcc8d5','#f4a7b9','#a8c9a0','#7ba98b','#fde8ee','#d6ead4','#fcc8d5'];
+  const cols = ['#fcc8d5','#f4a7b9','#a8c9a0','#7ba98b','#fde8ee','#d6ead4','#d1c4e9','#b2dfdb'];
   for (let i = 0; i < 20; i++) {
     const d = document.createElement('div'); d.className = 'dd';
     const sz = Math.random() * 9 + 4;
@@ -457,54 +672,171 @@ function createDeco() {
 }
 
 // ═══ MODE ═══
-function setMode(m) {
+function setMode(m, fromSugg) {
   mode = m;
   // sidebar tabs
-  document.getElementById('tabChat').className = 'mt' + (m==='chat'?' ac':'');
-  document.getElementById('tabMath').className = 'mt' + (m==='math'?' am':'');
+  document.getElementById('tabChat').className    = 'mt' + (m==='chat'?' ac':'');
+  document.getElementById('tabMath').className    = 'mt' + (m==='math'?' am':'');
+  document.getElementById('tabTranslate').className  = 'mt' + (m==='translate'?' av':'');
+  document.getElementById('tabSummarize').className  = 'mt' + (m==='summarize'?' at':'');
   // topbar pill
   const pill = document.getElementById('modePill');
-  const lbl = document.getElementById('modeLabel');
+  const lbl  = document.getElementById('modeLabel');
+  const labels = {chat:'💬 Chat Mode', math:'🧮 Math Mode', translate:'🌐 Translate Mode', summarize:'📝 Summarize Mode'};
   pill.className = 'mode-pill ' + m;
-  lbl.textContent = m === 'chat' ? '💬 Chat Mode' : '🧮 Math Mode';
-  // calc panel
-  document.getElementById('calcPanel').className = 'calc-panel' + (m==='math'?' open':'');
+  lbl.textContent = labels[m];
+  // sub-panels
+  document.getElementById('calcPanel').className  = 'sub-panel math-panel'  + (m==='math'?' open':'');
+  document.getElementById('transPanel').className = 'sub-panel trans-panel' + (m==='translate'?' open':'');
+  document.getElementById('summPanel').className  = 'sub-panel summ-panel'  + (m==='summarize'?' open':'');
   // input box style
   const ib = document.getElementById('inpBox');
-  ib.className = 'inp-box' + (m==='math'?' math-mode':'');
+  ib.className = 'inp-box' + (m!=='chat'?` ${m}-mode`:'');
   // send button style
   const sb = document.getElementById('sendBtn');
-  sb.className = 'send ' + (m==='math'?'math-send':'chat-send');
+  sb.className = 'send ' + m + '-send';
   // placeholder
-  document.getElementById('ta').placeholder = m === 'math'
-    ? 'Nhập bài toán cần giải... 🧮'
-    : 'Nhắn tin với Mimi AI... ♡';
-  // update suggestions
+  const phs = {
+    chat: 'Nhắn tin với Mimi AI... ♡',
+    math: 'Nhập bài toán cần giải... 🧮',
+    translate: 'Nhập văn bản cần dịch... 🌐',
+    summarize: 'Dán văn bản hoặc upload file để tóm tắt... 📝'
+  };
+  document.getElementById('ta').placeholder = phs[m];
   updateSuggs();
 }
 
 function updateSuggs() {
   const box = document.getElementById('suggBox');
   if (!box) return;
-  if (mode === 'math') {
-    box.innerHTML = `
-      <button class="sc mc" onclick="sg(this)"><span class="ci">📐</span>Tính diện tích hình tròn bán kính 7cm</button>
-      <button class="sc mc" onclick="sg(this)"><span class="ci">🔢</span>Giải phương trình: 2x² - 5x + 3 = 0</button>
-      <button class="sc mc" onclick="sg(this)"><span class="ci">📊</span>Tính lãi suất kép 8%/năm trong 5 năm, vốn 10 triệu</button>
-      <button class="sc mc" onclick="sg(this)"><span class="ci">🧊</span>Tính thể tích hình cầu bán kính 6cm</button>`;
-  } else {
-    box.innerHTML = `
+  const suggs = {
+    chat: `
       <button class="sc" onclick="sg(this)"><span class="ci">💬</span>Giải thích AI và machine learning</button>
       <button class="sc" onclick="sg(this)"><span class="ci">✍️</span>Viết email xin việc tiếng Anh</button>
       <button class="sc mc" onclick="sg(this)"><span class="ci">🧮</span>Giải phương trình: 2x² - 5x + 3 = 0</button>
-      <button class="sc" onclick="sg(this)"><span class="ci">🌏</span>Dịch đoạn văn Anh → Việt</button>`;
+      <button class="sc vc" onclick="sg(this,'translate')"><span class="ci">🌐</span>Dịch đoạn văn sang tiếng Anh</button>`,
+    math: `
+      <button class="sc mc" onclick="sg(this)"><span class="ci">📐</span>Tính diện tích hình tròn bán kính 7cm</button>
+      <button class="sc mc" onclick="sg(this)"><span class="ci">🔢</span>Giải phương trình: 2x² - 5x + 3 = 0</button>
+      <button class="sc mc" onclick="sg(this)"><span class="ci">📊</span>Tính lãi suất kép 8%/năm trong 5 năm, vốn 10 triệu</button>
+      <button class="sc mc" onclick="sg(this)"><span class="ci">🧊</span>Tính thể tích hình cầu bán kính 6cm</button>`,
+    translate: `
+      <button class="sc vc" onclick="sg(this)"><span class="ci">🇻🇳</span>Xin chào, bạn có khỏe không?</button>
+      <button class="sc vc" onclick="sg(this)"><span class="ci">🌏</span>Hello, how are you doing today?</button>
+      <button class="sc vc" onclick="sg(this)"><span class="ci">📝</span>Sửa lỗi ngữ pháp: I go to school yesterday</button>
+      <button class="sc vc" onclick="sg(this)"><span class="ci">✨</span>Dịch thơ: The road not taken by Robert Frost</button>`,
+    summarize: `
+      <button class="sc tc" onclick="sg(this)"><span class="ci">⚡</span>Tóm tắt nội dung tôi vừa dán vào</button>
+      <button class="sc tc" onclick="sg(this)"><span class="ci">🔑</span>Tìm ý chính và từ khóa quan trọng</button>
+      <button class="sc tc" onclick="sg(this)"><span class="ci">📋</span>Liệt kê các điểm chính theo gạch đầu dòng</button>
+      <button class="sc tc" onclick="sg(this)"><span class="ci">❓</span>Tạo 5 câu hỏi kiểm tra từ nội dung này</button>`
+  };
+  box.innerHTML = suggs[mode] || suggs.chat;
+}
+
+// ═══ TRANSLATE HELPERS ═══
+function swapLangs() {
+  const f = document.getElementById('langFrom');
+  const t = document.getElementById('langTo');
+  const tmp = f.value === 'auto' ? 'vi' : f.value;
+  f.value = t.value;
+  t.value = tmp;
+}
+
+function quickTrans(from, to) {
+  document.getElementById('langFrom').value = from;
+  document.getElementById('langTo').value   = to;
+  setMode('translate');
+  document.getElementById('ta').focus();
+  showToast(`🌐 Đã chọn: ${from} → ${to}`);
+}
+
+function getLangName(code) {
+  const names = {auto:'tự động',vi:'Việt',en:'Anh',zh:'Trung',ja:'Nhật',ko:'Hàn',fr:'Pháp',de:'Đức',es:'Tây Ban Nha',ru:'Nga',th:'Thái'};
+  return names[code] || code;
+}
+
+// ═══ SUMMARIZE HELPERS ═══
+function setSummType(type, el) {
+  summType = type;
+  document.querySelectorAll('.summ-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ══ File Handling (Summarize Panel) ══
+function handleDrag(e, over) {
+  e.preventDefault();
+  document.getElementById('fileDrop').classList.toggle('drag', over);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  handleDrag(e, false);
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f);
+}
+
+function handleFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) processFile(f);
+}
+
+function handleInlineFile(e) {
+  const f = e.target.files[0];
+  if (f) processFile(f, true);
+}
+
+function processFile(file, inline = false) {
+  const maxSize = 500 * 1024; // 500KB
+  if (file.size > maxSize) {
+    showToast('❌ File quá lớn! Tối đa 500KB.'); return;
   }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    uploadedFile = { name: file.name, size: file.size, content: e.target.result };
+    // Update UI
+    const sz = file.size < 1024 ? `${file.size}B` : `${(file.size/1024).toFixed(1)}KB`;
+    // Panel file info
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = sz;
+    document.getElementById('fileInfo').classList.add('show');
+    // Input strip
+    document.getElementById('fileStripName').textContent = file.name;
+    document.getElementById('fileStripSize').textContent = sz;
+    document.getElementById('fileStrip').classList.add('show');
+    checkSend();
+    showToast(`📄 Đã tải: ${file.name} (${sz})`);
+    if (!inline) setMode('summarize');
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function clearFile() {
+  uploadedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('inlineFileInput').value = '';
+  document.getElementById('fileInfo').classList.remove('show');
+  document.getElementById('fileStrip').classList.remove('show');
+  checkSend();
+}
+
+function summarizeFile() {
+  if (!uploadedFile) { showToast('❌ Chưa có file! Hãy upload file trước.'); return; }
+  const typePrompts = {
+    brief:   'Tóm tắt ngắn gọn (3-5 câu)',
+    detail:  'Tóm tắt chi tiết có cấu trúc',
+    bullets: 'Liệt kê các điểm chính theo gạch đầu dòng',
+    key:     'Rút ra ý chính và từ khóa quan trọng'
+  };
+  const prompt = `${typePrompts[summType]} cho nội dung file "${uploadedFile.name}" sau đây:\n\n${uploadedFile.content.substring(0, 6000)}`;
+  document.getElementById('ta').value = prompt;
+  checkSend();
+  send();
 }
 
 // ═══ QUICK CALCULATOR ═══
 function setCalc(expr) {
-  document.getElementById('calcIn').value = expr;
-  quickCalc();
+  document.getElementById('calcIn').value = expr; quickCalc();
 }
 
 function quickCalc() {
@@ -513,7 +845,6 @@ function quickCalc() {
   const res = document.getElementById('calcRes');
   const val = document.getElementById('calcVal');
   try {
-    // Pre-process: degree → radian conversion for trig
     let expr = raw.replace(/(\d+(?:\.\d+)?)\s*°/g, '($1 deg)');
     const result = math.evaluate(expr);
     const formatted = typeof result === 'number'
@@ -534,35 +865,97 @@ function askMath() {
   setMode('math');
   document.getElementById('ta').value = 'Giải và giải thích: ' + expr;
   ar(document.getElementById('ta'));
-  document.getElementById('sendBtn').disabled = false;
+  checkSend();
   send();
+}
+
+// ═══ VOICE COMMAND ═══
+function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'vi-VN';
+
+  recognition.onresult = (e) => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t; else interim += t;
+    }
+    const ta = document.getElementById('ta');
+    if (final) {
+      ta.value = (ta.value + ' ' + final).trim();
+      document.getElementById('voiceText').textContent = '✅ Đã ghi: ' + final;
+    } else {
+      document.getElementById('voiceText').textContent = '🎤 ' + (interim || 'Đang nghe...');
+    }
+    ar(ta); checkSend();
+  };
+
+  recognition.onerror = (e) => {
+    stopVoice();
+    const msgs = { 'not-allowed':'❌ Chưa cấp quyền micro!', 'no-speech':'⚠️ Không nghe thấy gì, thử lại nhé!', 'network':'❌ Lỗi mạng.' };
+    showToast(msgs[e.error] || '❌ Lỗi giọng nói: ' + e.error);
+  };
+
+  recognition.onend = () => stopVoice();
+}
+
+function toggleVoice() {
+  if (!recognition) { showToast('❌ Trình duyệt không hỗ trợ nhận giọng nói!'); return; }
+  if (isListening) {
+    recognition.stop();
+  } else {
+    // Switch recognition language based on mode
+    recognition.lang = (mode === 'translate') ? 'vi-VN' : 'vi-VN';
+    try {
+      recognition.start();
+      isListening = true;
+      document.getElementById('voiceBtn').classList.add('listening');
+      document.getElementById('voiceBtn').title = 'Đang nghe... (nhấn để dừng)';
+      document.getElementById('voiceBar').classList.add('show');
+      document.getElementById('voiceText').textContent = 'Đang nghe... nói điều bạn muốn hỏi 🎤';
+      showToast('🎤 Đang lắng nghe...');
+    } catch(e) {
+      showToast('❌ Không thể bật micro!');
+    }
+  }
+}
+
+function stopVoice() {
+  isListening = false;
+  document.getElementById('voiceBtn').classList.remove('listening');
+  document.getElementById('voiceBtn').title = 'Ra lệnh giọng nói 🎤';
+  document.getElementById('voiceBar').classList.remove('show');
 }
 
 // ═══ SESSION MANAGEMENT ═══
 function loadSessions() {
-  const s = localStorage.getItem('mimi_v2_sessions');
+  const s = localStorage.getItem('mimi_v3_sessions');
   if (s) sessions = JSON.parse(s);
   renderHist();
 }
-function saveSessions() { localStorage.setItem('mimi_v2_sessions', JSON.stringify(sessions)); }
+function saveSessions() { localStorage.setItem('mimi_v3_sessions', JSON.stringify(sessions)); }
 
 function renderHist() {
   const c = document.getElementById('hist');
   c.innerHTML = '<div class="sb-lbl">Lịch sử ♡</div>';
+  const icons = { chat:'💬', math:'🧮', translate:'🌐', summarize:'📝' };
   [...sessions].reverse().forEach(s => {
     const el = document.createElement('div');
     el.className = 'hi' + (s.id === curId ? ' active' : '');
-    el.innerHTML = `<span class="hi-icon">${s.mode==='math'?'🧮':'💬'}</span>${esc(s.title)}`;
+    el.innerHTML = `<span class="hi-icon">${icons[s.mode]||'💬'}</span>${esc(s.title)}`;
     el.onclick = () => loadSess(s.id);
     c.appendChild(el);
   });
 }
 
 function newChat() {
-  msgs = []; curId = null;
+  msgs = []; curId = null; clearFile();
   document.getElementById('msgs').innerHTML = buildWelcome();
-  renderHist();
-  updateSuggs();
+  renderHist(); updateSuggs();
 }
 
 function loadSess(id) {
@@ -571,7 +964,7 @@ function loadSess(id) {
   if (s.mode) setMode(s.mode);
   const c = document.getElementById('msgs');
   c.innerHTML = '';
-  msgs.forEach(m => appendMsg(m.role, m.content));
+  msgs.forEach(m => appendMsg(m.role, m.content, m.mode));
   renderHist(); scrollBot();
 }
 
@@ -594,39 +987,77 @@ function buildWelcome() {
       <line x1="60" y1="67" x2="82" y2="67" stroke="#ddd" stroke-width="1.5"/>
     </svg>
     <div class="w-title">Xin chào! Mình là Mimi ♡</div>
-    <p class="w-sub">Trợ lý AI dễ thương — Chat & Giải toán cùng Groq 🍵</p>
-    <div class="w-em">🌸 🧮 💕 🍵 🎀</div>
+    <p class="w-sub">Chat · Giải toán · Dịch văn bản · Tóm tắt file 🍵</p>
+    <div class="w-em">🌸 🧮 🌐 📝 🎀</div>
     <div class="suggs" id="suggBox">
       <button class="sc" onclick="sg(this)"><span class="ci">💬</span>Giải thích AI và machine learning</button>
       <button class="sc" onclick="sg(this)"><span class="ci">✍️</span>Viết email xin việc tiếng Anh</button>
       <button class="sc mc" onclick="sg(this)"><span class="ci">🧮</span>Giải phương trình: 2x² - 5x + 3 = 0</button>
-      <button class="sc" onclick="sg(this)"><span class="ci">🌏</span>Dịch đoạn văn Anh → Việt</button>
+      <button class="sc vc" onclick="sg(this,'translate')"><span class="ci">🌐</span>Dịch đoạn văn sang tiếng Anh</button>
     </div>
   </div>`;
 }
 
 // ═══ SEND ═══
-function sg(btn) {
+function sg(btn, forceMode) {
   const icon = btn.querySelector('.ci');
   const text = btn.textContent.replace(icon ? icon.textContent : '', '').trim();
-  // auto switch to math mode for math suggestions
   if (btn.classList.contains('mc')) setMode('math');
+  else if (btn.classList.contains('vc') || forceMode === 'translate') setMode('translate');
+  else if (btn.classList.contains('tc')) setMode('summarize');
   document.getElementById('ta').value = text;
-  document.getElementById('sendBtn').disabled = false;
+  checkSend();
   send();
 }
 
 async function send() {
   const ta = document.getElementById('ta');
   const text = ta.value.trim();
-  if (!text || loading) return;
+  if ((!text && !uploadedFile) || loading) return;
 
   const w = document.getElementById('welcome');
   if (w) w.remove();
 
-  msgs.push({ role: 'user', content: text });
-  appendMsg('user', text);
+  // Build display content (what user sees in bubble)
+  let displayText = text;
+  let apiContent = text;
+
+  // For translate mode, inject language instructions
+  if (mode === 'translate') {
+    const from = document.getElementById('langFrom').value;
+    const to   = document.getElementById('langTo').value;
+    const fromName = getLangName(from);
+    const toName   = getLangName(to);
+    if (from === 'auto') {
+      apiContent = `Dịch văn bản sau sang tiếng ${toName}, giữ nguyên ý nghĩa và phong cách:\n\n${text}`;
+    } else {
+      apiContent = `Dịch văn bản sau từ tiếng ${fromName} sang tiếng ${toName}, giữ nguyên ý nghĩa và phong cách:\n\n${text}`;
+    }
+  }
+
+  // File content appended
+  let fileAttached = null;
+  if (uploadedFile && mode !== 'translate') {
+    fileAttached = uploadedFile;
+    if (!text) {
+      // Auto-summarize prompt
+      const typePrompts = {
+        brief:   'Tóm tắt ngắn gọn (3-5 câu)',
+        detail:  'Tóm tắt chi tiết có cấu trúc',
+        bullets: 'Liệt kê các điểm chính theo gạch đầu dòng',
+        key:     'Rút ra ý chính và từ khóa quan trọng'
+      };
+      displayText = `[📄 ${uploadedFile.name}] ${typePrompts[summType]}`;
+      apiContent = `${typePrompts[summType]} cho nội dung file "${uploadedFile.name}":\n\n${uploadedFile.content.substring(0,6000)}`;
+    } else {
+      apiContent = `${text}\n\n---\n📄 Nội dung file "${uploadedFile.name}":\n${uploadedFile.content.substring(0,6000)}`;
+    }
+  }
+
+  msgs.push({ role: 'user', content: apiContent, mode });
+  appendMsg('user', displayText || `[📄 ${uploadedFile?.name}]`, mode, fileAttached);
   ta.value = ''; ar(ta);
+  clearFile();
   document.getElementById('sendBtn').disabled = true;
   loading = true;
 
@@ -653,9 +1084,9 @@ async function send() {
 
     const data = await r.json();
     const reply = data.content || '(Không có phản hồi)';
-    msgs.push({ role: 'assistant', content: reply });
-    appendMsg('assistant', reply, mode === 'math');
-    saveSess(text);
+    msgs.push({ role: 'assistant', content: reply, mode });
+    appendMsg('assistant', reply, mode);
+    saveSess(displayText || msgs[0]?.content?.substring(0,40));
 
   } catch(e) {
     tyEl.remove();
@@ -664,13 +1095,14 @@ async function send() {
   }
 
   loading = false; scrollBot();
-  document.getElementById('sendBtn').disabled = !ta.value.trim();
+  checkSend();
 }
 
 function saveSess(firstMsg) {
+  const title = (firstMsg || 'Cuộc trò chuyện').substring(0, 35);
   if (!curId) {
     curId = Date.now().toString();
-    sessions.push({ id: curId, title: firstMsg.substring(0, 35) + (firstMsg.length > 35 ? '…' : ''), messages: [...msgs], mode });
+    sessions.push({ id: curId, title: title + (title.length >= 35 ? '…' : ''), messages: [...msgs], mode });
   } else {
     const i = sessions.findIndex(s => s.id === curId);
     if (i !== -1) { sessions[i].messages = [...msgs]; sessions[i].mode = mode; }
@@ -693,24 +1125,39 @@ function kittyAv() {
   </svg>`;
 }
 
-function appendMsg(role, content, isMath = false) {
+function appendMsg(role, content, msgMode, fileObj) {
   const c = document.getElementById('msgs');
   const isU = role === 'user';
   const div = document.createElement('div');
-  div.className = `msg ${isU ? 'u' : 'ai' + (isMath ? ' mth' : '')}`;
+  const modeClass = {math:'mth',translate:'mtr',summarize:'msm'}[msgMode] || '';
+  div.className = `msg ${isU ? 'u' : 'ai' + (modeClass ? ' '+modeClass : '')}`;
 
   const av = document.createElement('div'); av.className = 'av';
   if (isU) av.textContent = '♡'; else av.innerHTML = kittyAv();
 
   const bub = document.createElement('div'); bub.className = 'bub';
   if (isU) {
-    bub.textContent = content;
+    if (fileObj) {
+      bub.innerHTML = `<div class="file-badge">📄 ${esc(fileObj.name)}</div><br>`;
+    }
+    bub.innerHTML += `<span>${esc(content)}</span>`;
   } else {
-    if (isMath) bub.innerHTML = '<span class="m-badge">🧮 Mimi giải toán</span><br>';
+    const badgeMap = {
+      math: '<span class="m-badge math">🧮 Mimi giải toán</span><br>',
+      translate: '<span class="m-badge translate">🌐 Mimi dịch văn bản</span><br>',
+      summarize: '<span class="m-badge summarize">📝 Mimi tóm tắt</span><br>'
+    };
+    if (badgeMap[msgMode]) bub.innerHTML = badgeMap[msgMode];
     bub.innerHTML += md(content);
+
     const acts = document.createElement('div'); acts.className = 'bub-acts';
     acts.innerHTML = `<button class="ba" onclick="cp(this,${JSON.stringify(content)})">📋 Sao chép</button>`;
-    if (isMath) acts.innerHTML += `<button class="ba green" onclick="speakText(${JSON.stringify(content.replace(/<[^>]+>/g,''))})">🔊 Đọc</button>`;
+    if (msgMode === 'math' || msgMode === 'summarize') {
+      acts.innerHTML += `<button class="ba green" onclick="speakText(${JSON.stringify(content.replace(/<[^>]+>/g,''))})">🔊 Đọc</button>`;
+    }
+    if (msgMode === 'translate') {
+      acts.innerHTML += `<button class="ba purple" onclick="speakText(${JSON.stringify(content.replace(/<[^>]+>/g,''))})">🔊 Đọc bản dịch</button>`;
+    }
     bub.appendChild(acts);
   }
 
@@ -752,7 +1199,7 @@ function md(t) {
   }).join('');
   return h;
 }
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ═══ UTILS ═══
 function kd(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
